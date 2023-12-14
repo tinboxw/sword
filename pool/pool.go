@@ -1,7 +1,7 @@
 package pool
 
 import (
-	"sword/thread"
+	"github.com/tinboxw/sword/thread"
 	"time"
 )
 
