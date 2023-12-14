@@ -69,6 +69,21 @@ func NewTsPool[T any](src [2]*T) *TsPool[T] {
 	}
 }
 
+type Element[T any] struct {
+	value *T
+	pool  *TsPool[T]
+}
+
+func (e Element[T]) Read() *T  { return e.value }
+func (e Element[T]) ReadDone() { e.pool.ReadDone() }
+
+func (x *TsPool[T]) Read() *Element[T] {
+	return &Element[T]{
+		value: x.ReadDo(),
+		pool:  x,
+	}
+}
+
 func (x *TsPool[T]) ReadDo() *T       { x.lock.Lock(); return x.Get() }
 func (x *TsPool[T]) ReadDone()        { x.lock.Unlock() }
 func (x *TsPool[T]) GetWriteable() *T { return x.GetNext() }
