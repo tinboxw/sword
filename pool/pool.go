@@ -77,7 +77,9 @@ func (x *TsPool[T]) TryFlush(fnSuccess func(cur, next *T)) bool {
 		x.TakeNext()
 		cur := x.Get()
 		next := x.GetNext()
-		fnSuccess(cur, next)
+		if fnSuccess != nil {
+			fnSuccess(cur, next)
+		}
 		x.lock.Unlock()
 		return true
 	}
